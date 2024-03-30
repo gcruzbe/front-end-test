@@ -1,0 +1,31 @@
+<div class="wordle-container">
+  <h1>Wordle Game</h1>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="game">
+    <div *ngIf="!gameOver">
+      <p>Intentos restantes: {{ game.attemptsLeft }}</p>
+      <p>Palabra a adivinar: {{ game.wordToGuess }}</p>
+      <p *ngIf="game.guesses.length > 0">Intentos anteriores:</p>
+      <ul>
+        <li *ngFor="let guess of game.guesses">
+          {{ guess.guessWord }} - {{ guess.result }}
+        </li>
+      </ul>
+      
+      <label for="guessWord">Introduce tu palabra:</label>
+      <input type="text" id="guessWord" [(ngModel)]="guessWord" [disabled]="gameWon || gameOver">
+      <button (click)="makeGuess()" [disabled]="gameWon || gameOver">Enviar intento</button>
+    </div>
+
+    <div *ngIf="gameOver">
+      <h2 *ngIf="gameWon">¡Felicidades! Has ganado el juego.</h2>
+      <h2 *ngIf="!gameWon">¡Lo siento! Has perdido el juego.</h2>
+      <button (click)="startNewGame()">Iniciar nuevo juego</button>
+    </div>
+  </div>
+</div>
+  
