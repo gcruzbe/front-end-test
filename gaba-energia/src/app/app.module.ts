@@ -1,27 +1,23 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { WordleGameComponent } from '../app/wordle-game/wordle-game.component';
+import { WordleGameModule  } from '../app/wordle-game/wordle-game.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    WordleGameComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    WordleGameComponent,
-    AppComponent
+    WordleGameModule 
   ],
-  exports: [
-    WordleGameComponent,
-    AppComponent
-  ],
+  providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
