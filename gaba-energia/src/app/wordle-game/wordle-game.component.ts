@@ -12,9 +12,9 @@ import { Guess } from '../models/guess.model';
   styleUrls: ['./wordle-game.component.css']
 })
 export class WordleGameComponent implements OnInit {
-  game!: Game;
-  guessWord!: string;
-  errorMessage!: string;
+  game: Game | undefined;
+  guessWord: string = '';
+  errorMessage: string = '';
   gameOver: boolean = false;
   gameWon: boolean = false;
 
@@ -25,29 +25,51 @@ export class WordleGameComponent implements OnInit {
   }
 
   startNewGame(): void {
-    this.wordleService.startNewGame().subscribe(
-      (game: Game) => {
+    this.wordleService.startNewGame().subscribe({
+      next: (game: Game) => {
         this.game = game;
         this.errorMessage = '';
         this.gameOver = false;
         this.gameWon = false;
       },
-      (error: string) => {
+      error: (error: string) => {
         this.errorMessage = 'Error al iniciar el juego. Por favor, inténtalo de nuevo más tarde.';
       }
-    );
+    });
   }
 
   makeGuess(): void {
-    this.wordleService.makeGuess(this.game.gameId, this.guessWord.toUpperCase()).subscribe(
-      (response: any) => {
-        // Actualizar el estado del juego después de hacer un intento
+    if (!this.game) {
+      console.error('No se puede hacer una suposición sin un juego en curso.');
+      return;
+    }
+
+    this.wordleService.makeGuess(this.game.gameId, this.guessWord.toUpperCase()).subscribe({
+      next: (response: any) => {
         const guess: Guess = {
           guessWord: this.guessWord.toUpperCase(),
           result: response.result
         };
-        this.game.guesses.push(guess);
-        this.game.attemptsLeft = response.attemptsLeft;
+
+        if (this.game?.guesses) {
+          this.game.guesses = [...this.game.guesses];
+        } else {
+          console.error('No se puede acceder a las suposiciones del juego.');
+          return;
+        }
+
+        if (this.game?.attemptsLeft) {
+          this.game.attemptsLeft = response.attemptsLeft;
+        } else {
+          console.error('No se puede acceder al número de intentos restantes del juego.');
+          return;
+        }
+
+        if (this.game.guesses)
+          this.game.guesses.push(guess);
+
+        if (this.game.attemptsLeft)
+          this.game.attemptsLeft = response.attemptsLeft;
 
         if (response.isGameWon) {
           this.gameWon = true;
@@ -56,16 +78,16 @@ export class WordleGameComponent implements OnInit {
           this.gameOver = true;
         }
 
-        this.guessWord = ''; // Limpiar el campo de entrada
+        this.guessWord = '';
       },
-      (error: string) => {
+      error: (error: string) => {
         this.errorMessage = 'Error al hacer el intento. Por favor, inténtalo de nuevo.';
       }
-    );
+    });
   }
 
   onInput(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
-    this.guessWord = value;  // Actualizar guessWord con el valor ingresado por el usuario para evitar usar ngModel ya que da error en html
+    this.guessWord = value;
   }
 }

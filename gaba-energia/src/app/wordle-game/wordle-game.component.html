@@ -9,7 +9,7 @@
     <div *ngIf="!gameOver">
       <p>Intentos restantes: {{ game.attemptsLeft }}</p>
       <p>Palabra a adivinar: {{ game.wordToGuess }}</p>
-      <p *ngIf="game.guesses.length > 0">Intentos anteriores:</p>
+      <p *ngIf="game.guesses && game.guesses.length > 0">Intentos anteriores:</p> <!-- Agregado game.guesses && -->
       <ul>
         <li *ngFor="let guess of game.guesses">
           {{ guess.guessWord }} - {{ guess.result }}
@@ -28,4 +28,3 @@
     </div>
   </div>
 </div>
-  
