@@ -17,7 +17,7 @@
       </ul>
       
       <label for="guessWord">Introduce tu palabra:</label>
-      <input type="text" id="guessWord" [(ngModel)]="guessWord" [disabled]="gameWon || gameOver">
+      <input type="text" id="guessWord" (input)="onInput($event)" [disabled]="gameWon || gameOver">
       <button (click)="makeGuess()" [disabled]="gameWon || gameOver">Enviar intento</button>
     </div>
 

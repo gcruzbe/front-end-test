@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { WordleService } from '../services/wordle.service';
 import { Game } from '../models/wordle.model';
 import { Guess } from '../models/guess.model';
 
-const baseClass = 'app-wordle-game';
-
 @Component({
-  selector: baseClass,
+  selector: 'app-wordle-game',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './wordle-game.component.html',
   styleUrls: ['./wordle-game.component.css']
 })
@@ -61,5 +62,10 @@ export class WordleGameComponent implements OnInit {
         this.errorMessage = 'Error al hacer el intento. Por favor, inténtalo de nuevo.';
       }
     );
+  }
+
+  onInput(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.guessWord = value;  // Actualizar guessWord con el valor ingresado por el usuario para evitar usar ngModel ya que da error en html
   }
 }
