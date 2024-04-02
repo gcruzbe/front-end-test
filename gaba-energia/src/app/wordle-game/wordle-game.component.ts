@@ -12,7 +12,7 @@ import { Guess } from '../models/guess.model';
   styleUrls: ['./wordle-game.component.css']
 })
 export class WordleGameComponent implements OnInit {
-  @Input() buttonDisabled: boolean = false; // Input para controlar la deshabilitación del botón
+  @Input() buttonDisabled: boolean = false;
   game: Game | undefined;
   guessWord: string = '';
   errorMessage: string = '';
@@ -72,7 +72,7 @@ export class WordleGameComponent implements OnInit {
         }
 
         if (this.game) {
-          this.game.attemptsLeft = this.game.attemptsLeft - 1; // Actualizar el número de intentos restantes
+          this.game.attemptsLeft = this.game.attemptsLeft - 1;
         } else {
           console.error('No se puede acceder al número de intentos restantes del juego.');
           return;
@@ -81,7 +81,6 @@ export class WordleGameComponent implements OnInit {
         if (this.game.guesses)
           this.game.guesses.push(guess);
 
-        // Comprobar si el juego ha sido ganado o si se han agotado los intentos
         if (response.isGameWon) {
           this.gameWon = true;
           this.gameOver = true;

@@ -9,13 +9,12 @@ export class WordleService {
 
   constructor() { }
 
-  // Método para iniciar un nuevo juego de Wordle
   startNewGame(difficulty: string = 'easy'): Observable<Game> {
     const gameId = Math.random().toString(36).substring(7);
     const initialGame: Game = {
       gameId: gameId,
       status: 0,
-      attemptsLeft: 6, // Inicializar con 6 intentos
+      attemptsLeft: 6,
       wordToGuess: 'SOLAR',
       guesses: []
     };
@@ -23,7 +22,6 @@ export class WordleService {
     return of(initialGame);
   }
 
-  // Método para realizar un intento de adivinanza en un juego de Wordle
   makeGuess(gameId: string, guessWord: string): Observable<Game> {
     let game: Game = this.getMockGame(gameId);
 
@@ -31,27 +29,22 @@ export class WordleService {
       console.error('Juego no encontrado')
     }
 
-    // Verificar si aún quedan intentos
     if (game.attemptsLeft <= 0) {
       console.error('Ya no tienes más intentos')
     }
 
-    // Deshabilitar el juego si no quedan intentos
     if (game.attemptsLeft === 0) {
-      game.status = 2; // Derrota
+      game.status = 2;
     }
 
-    // Calcular el resultado del intento
     const result = this.calculateResult(guessWord, game.wordToGuess);
-    const isGameWon = result === '11111'; // La palabra se ha adivinado correctamente
+    const isGameWon = result === '11111';
 
     console.log(isGameWon, '=====')
 
-    // Retornar los resultados simulados
     return of({ ...game, result, isGameWon });
   }
 
-  // Método para obtener detalles de un juego de Wordle
   getGameDetails(gameId: string): Observable<Game> {
     const game: Game = this.getMockGame(gameId);
 
@@ -62,7 +55,6 @@ export class WordleService {
     return of(game);
   }
 
-  // Método para calcular el resultado de un intento
   private calculateResult(guessWord: string, targetWord: string): string {
     let result = '';
 
@@ -77,12 +69,11 @@ export class WordleService {
     return result;
   }
 
-  // Método para simular obtener un juego por su ID
   private getMockGame(gameId: string): Game {
     return {
       gameId: gameId,
       status: 0,
-      attemptsLeft: 6, // Inicializar con 6 intentos
+      attemptsLeft: 6,
       wordToGuess: 'SOLAR',
       guesses: []
     };
