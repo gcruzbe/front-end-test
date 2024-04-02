@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WordleService } from '../services/wordle.service';
 import { Game } from '../models/wordle.model';
@@ -12,11 +12,13 @@ import { Guess } from '../models/guess.model';
   styleUrls: ['./wordle-game.component.css']
 })
 export class WordleGameComponent implements OnInit {
+  @Input() buttonDisabled: boolean = false; // Input para controlar la deshabilitación del botón
   game: Game | undefined;
   guessWord: string = '';
   errorMessage: string = '';
   gameOver: boolean = false;
   gameWon: boolean = false;
+  hiddenWord: string = '';
 
   constructor(private wordleService: WordleService) { }
 
@@ -31,6 +33,7 @@ export class WordleGameComponent implements OnInit {
         this.errorMessage = '';
         this.gameOver = false;
         this.gameWon = false;
+        this.hiddenWord = this.generateHiddenWord(game.wordToGuess);
       },
       error: (error: string) => {
         this.errorMessage = 'Error al iniciar el juego. Por favor, inténtalo de nuevo más tarde.';
@@ -48,7 +51,7 @@ export class WordleGameComponent implements OnInit {
       next: (response: any) => {
         const guess: Guess = {
           guessWord: this.guessWord.toUpperCase(),
-          result: response.result
+          result: response.result,
         };
 
         if (this.game?.guesses) {
@@ -58,8 +61,8 @@ export class WordleGameComponent implements OnInit {
           return;
         }
 
-        if (this.game?.attemptsLeft) {
-          this.game.attemptsLeft = response.attemptsLeft;
+        if (this.game) {
+          this.game.attemptsLeft = this.game.attemptsLeft - 1; // Actualizar el número de intentos restantes
         } else {
           console.error('No se puede acceder al número de intentos restantes del juego.');
           return;
@@ -68,9 +71,7 @@ export class WordleGameComponent implements OnInit {
         if (this.game.guesses)
           this.game.guesses.push(guess);
 
-        if (this.game.attemptsLeft)
-          this.game.attemptsLeft = response.attemptsLeft;
-
+        // Comprobar si el juego ha sido ganado o si se han agotado los intentos
         if (response.isGameWon) {
           this.gameWon = true;
           this.gameOver = true;
@@ -89,5 +90,9 @@ export class WordleGameComponent implements OnInit {
   onInput(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     this.guessWord = value;
+  }
+
+  generateHiddenWord(wordToGuess: string): string {
+    return '-'.repeat(wordToGuess.length);
   }
 }

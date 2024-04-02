@@ -1,30 +1,30 @@
 <div class="wordle-container">
-  <h1>Wordle Game</h1>
+  <h1 class="name-game">Wordle Game</h1>
 
-  <div *ngIf="errorMessage" class="error-message">
+  <div *ngIf="errorMessage" class="error-message" role="alert">
     {{ errorMessage }}
   </div>
 
   <div *ngIf="game">
-    <div *ngIf="!gameOver">
+    <section *ngIf="game && !gameOver">
       <p>Intentos restantes: {{ game.attemptsLeft }}</p>
-      <p>Palabra a adivinar: {{ game.wordToGuess }}</p>
-      <p *ngIf="game.guesses && game.guesses.length > 0">Intentos anteriores:</p> <!-- Agregado game.guesses && -->
-      <ul>
-        <li *ngFor="let guess of game.guesses">
-          {{ guess.guessWord }} - {{ guess.result }}
+      <p>Palabra a adivinar: {{ hiddenWord  }}</p>
+      <p *ngIf="game.guesses && game.guesses.length > 0">Intentos anteriores:</p>
+      <ul class="list-guesses">
+        <li class="guesses" *ngFor="let guess of game.guesses">
+          {{ guess.guessWord }} - {{ guess.result }} - {{ gameWon }}
         </li>
       </ul>
       
-      <label for="guessWord">Introduce tu palabra:</label>
-      <input type="text" id="guessWord" (input)="onInput($event)" [disabled]="gameWon || gameOver">
-      <button (click)="makeGuess()" [disabled]="gameWon || gameOver">Enviar intento</button>
-    </div>
+      <label class="label-input" for="guessWord">Introduce tu palabra:</label>
+      <input class="input-word" type="text" id="guessWord" (input)="onInput($event)" [disabled]="buttonDisabled" aria-label="Introduce tu palabra">
+      <button class="button-try" (click)="makeGuess()" [disabled]="buttonDisabled" aria-label="Enviar intento">Enviar intento</button>
+    </section>
 
-    <div *ngIf="gameOver">
-      <h2 *ngIf="gameWon">¡Felicidades! Has ganado el juego.</h2>
-      <h2 *ngIf="!gameWon">¡Lo siento! Has perdido el juego.</h2>
-      <button (click)="startNewGame()">Iniciar nuevo juego</button>
-    </div>
+    <section *ngIf="gameOver">
+      <h2 class="title-end-game" *ngIf="gameWon">¡Felicidades! Has ganado el juego.</h2>
+      <h2 class="title-end-game" *ngIf="!gameWon">¡Lo siento! Has perdido el juego.</h2>
+      <button class="button-start-game" (click)="startNewGame()" aria-label="Iniciar nuevo juego">Iniciar nuevo juego</button>
+    </section>
   </div>
 </div>

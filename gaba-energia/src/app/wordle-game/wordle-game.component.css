@@ -1,0 +1,68 @@
+.wordle-container {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+}
+
+.name-game {
+    text-align: center;
+    color: #333;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.list-guesses {
+    list-style-type: none;
+    padding: 0;
+}
+
+.guesses {
+    margin-bottom: 5px;
+}
+
+.label-input {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-word {
+    width: calc(100% - 90px);
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.button-try,
+.button-start-game {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4caf50;
+    color: #fff;
+    cursor: pointer;
+}
+
+.button-try:disabled,
+.button-start-game:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.button-try:hover,
+.button-start-game:hover {
+    background-color: #45a049;
+}
+
+.title-end-game {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}

@@ -36,9 +36,6 @@ export class WordleService {
       console.error('Ya no tienes más intentos')
     }
 
-    // Decrementar el número de intentos restantes
-    game.attemptsLeft--;
-
     // Deshabilitar el juego si no quedan intentos
     if (game.attemptsLeft === 0) {
       game.status = 2; // Derrota
@@ -47,6 +44,8 @@ export class WordleService {
     // Calcular el resultado del intento
     const result = this.calculateResult(guessWord, game.wordToGuess);
     const isGameWon = result === '11111'; // La palabra se ha adivinado correctamente
+
+    console.log(isGameWon, '=====')
 
     // Retornar los resultados simulados
     return of({ ...game, result, isGameWon });
