@@ -139,7 +139,8 @@
     color: #fff;
   }
 
-  .dark-mode .name-game .title-end-game {
+  .dark-mode .name-game,
+  .dark-mode .title-end-game {
     color: #ccc;
   }
   
