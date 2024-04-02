@@ -19,6 +19,8 @@ export class WordleGameComponent implements OnInit {
   gameOver: boolean = false;
   gameWon: boolean = false;
   hiddenWord: string = '';
+  usedWords: Set<string> = new Set();
+  isDarkMode: boolean = false;
 
   constructor(private wordleService: WordleService) { }
 
@@ -34,6 +36,7 @@ export class WordleGameComponent implements OnInit {
         this.gameOver = false;
         this.gameWon = false;
         this.hiddenWord = this.generateHiddenWord(game.wordToGuess);
+        this.usedWords.clear();
       },
       error: (error: string) => {
         this.errorMessage = 'Error al iniciar el juego. Por favor, inténtalo de nuevo más tarde.';
@@ -47,12 +50,19 @@ export class WordleGameComponent implements OnInit {
       return;
     }
 
+    if (this.usedWords.has(this.guessWord.toUpperCase())) {
+      console.error('Ya has intentado esta palabra. Intenta con otra.');
+      return;
+    }
+
     this.wordleService.makeGuess(this.game.gameId, this.guessWord.toUpperCase()).subscribe({
       next: (response: any) => {
         const guess: Guess = {
           guessWord: this.guessWord.toUpperCase(),
           result: response.result,
         };
+
+        this.usedWords.add(this.guessWord.toUpperCase());
 
         if (this.game?.guesses) {
           this.game.guesses = [...this.game.guesses];
@@ -94,5 +104,9 @@ export class WordleGameComponent implements OnInit {
 
   generateHiddenWord(wordToGuess: string): string {
     return '-'.repeat(wordToGuess.length);
+  }
+
+  toggleDarkMode(): void {
+    this.isDarkMode = !this.isDarkMode;
   }
 }

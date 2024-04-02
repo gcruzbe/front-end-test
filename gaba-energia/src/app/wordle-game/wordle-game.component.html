@@ -1,4 +1,4 @@
-<div class="wordle-container">
+<div class="wordle-container" [ngClass]="{'dark-mode': isDarkMode}">
   <h1 class="name-game">Wordle Game</h1>
 
   <div *ngIf="errorMessage" class="error-message" role="alert">
@@ -26,5 +26,12 @@
       <h2 class="title-end-game" *ngIf="!gameWon">¡Lo siento! Has perdido el juego.</h2>
       <button class="button-start-game" (click)="startNewGame()" aria-label="Iniciar nuevo juego">Iniciar nuevo juego</button>
     </section>
+  </div>
+  <div class="mode-switch">
+    <label class="switch">
+      <input class="switch-input" type="checkbox" (change)="toggleDarkMode()">
+      <span class="slider round"></span>
+    </label>
+    <span>Modo Oscuro</span>
   </div>
 </div>
